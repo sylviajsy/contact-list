@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import pool from "./db/db.js";
+import db from "./db/db.js";
+
+import contactsRoutes from "./routes/contacts.js";
 
 dotenv.config();
 
@@ -17,7 +19,7 @@ app.get("/", (req, res) => {
 
 app.get("/api/test-db", async (req, res) => {
   try {
-    const result = await pool.query("SELECT NOW();");
+    const result = await db.query("SELECT NOW();");
     res.json({
       message: "Database connected successfully",
       time: result.rows[0],
@@ -27,6 +29,9 @@ app.get("/api/test-db", async (req, res) => {
     res.status(500).json({ error: "Database connection failed" });
   }
 });
+
+// Routes
+app.use('/api/contacts', contactsRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
