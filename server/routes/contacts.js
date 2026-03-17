@@ -60,4 +60,28 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+// Add Contact
+router.post('/', async (req,res) => {
+    try {
+        const { name, email, phone, notes } = req.body;
+
+        
+
+        const result = await db.query(
+            `
+            INSERT INTO contacts (name, email, phone, notes)
+            VALUES ($1,$2,$3,$4)
+            RETURNING *
+            `,
+            [name, email, phone, notes]
+        );
+
+        res.status(201).json(result.rows[0]);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to add contact" });
+    }
+})
+
 export default router;

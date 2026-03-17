@@ -49,7 +49,7 @@ const ContactsPage = () => {
                 setModal(false);
             } else {
                 const errorData = await response.json();
-                toast.error(errorData.error || "Failed to add individual");  
+                toast.error(errorData.error || "Failed to add Contact");  
             }
         } catch (error) {
             console.error(error);
