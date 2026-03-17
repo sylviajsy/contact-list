@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { toast } from "react-toastify";
 import ContactsList from './ContactsList';
+import ContactForm from './ContactForm';
 
 const ContactsPage = () => {
     const [contacts, setContacts] = useState([]);
