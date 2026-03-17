@@ -91,3 +91,11 @@
   color: #1f2937;
   font-weight: 600;
 }
+
+.groups-checkbox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 18px;
+  margin-top: 6px;
+}
