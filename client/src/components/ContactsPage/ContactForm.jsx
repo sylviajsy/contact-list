@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
-import "./ContactForm.css" 
+import React, {useState, useEffect} from 'react'
+import { toast } from "react-toastify";
+import "./ContactForm.css";
 
 const ContactForm = ({ onAdd }) => {
     const [formData, setFormData] = useState({
@@ -7,7 +8,30 @@ const ContactForm = ({ onAdd }) => {
         email: "",
         phone: "",
         notes: "",
+        group_id: []
     });
+
+    const [groups, setGroups] = useState([]);
+
+    useEffect(() => {
+        loadGroups();
+    }, []);
+
+    const loadGroups = async () => {
+        try {
+            const res = await fetch("/api/group");
+
+            if (!res.ok) {
+                throw new Error("Failed to fetch group");
+            }
+
+            const data = await res.json();
+            setGroups(data);
+
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,8 +42,22 @@ const ContactForm = ({ onAdd }) => {
         }));
     };
 
+    const handleGroupChange = (ids) => {
+        setFormData((prev) => {
+
+            const exists = prev.groupId.includes(ids);
+
+            return {
+                ...prev,
+                groupId: exists
+                    ? prev.groupId.filter((id) => id !== ids)
+                    : [...prev.groupId, ids]
+                };
+        });
+    }
+
     const clearForm = () => {
-        setFormData({ name: "", email: "", phone: "", notes: "" });
+        setFormData({ name: "", email: "", phone: "", notes: "", group_id: [] });
     };
 
     const handleSubmit = (e) => {
@@ -64,6 +102,24 @@ const ContactForm = ({ onAdd }) => {
                     onChange={handleChange}
                 />
             </label>
+
+            <label>Groups</label>
+
+                <div className="groups-checkbox">
+                    {groups.map((group) => (
+                        <label key={group.id} className="checkbox-item">
+
+                        <input
+                            type="checkbox"
+                            checked={formData.groupIds.includes(group.id)}
+                            onChange={() => handleGroupChange(group.id)}
+                        />
+
+                        {group.name}
+
+                        </label>
+                    ))}
+                </div>
 
             <label>
                 Notes 
