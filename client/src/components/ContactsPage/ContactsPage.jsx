@@ -49,11 +49,11 @@ const ContactsPage = () => {
                 setModal(false);
             } else {
                 const errorData = await response.json();
-                toast.error(errorData.error || "Failed to add Contact");  
+                throw new Error(errorData.error || "Failed to add contact"); 
             }
         } catch (error) {
             console.error(error);
-            toast.error("Network error. Please try again later.");
+            toast.error(error.message);
         }
     }
 
