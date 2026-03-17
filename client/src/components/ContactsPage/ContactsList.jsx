@@ -1,11 +1,12 @@
 import React from 'react'
+import "./ContactsList.css" 
 
 const ContactsList = ({ contacts }) => {
 
     if (!contacts || contacts.length === 0) {
         return <p>No contacts found</p>;
     }
-    
+
   return (
     <div className="contacts-grid">
         {contacts.map((contact) => (
