@@ -62,8 +62,10 @@ router.get("/:id", async (req, res) => {
 
 // Add Contact
 router.post('/', async (req,res) => {
+    const client = await db.connect();
+
     try {
-        const { name, email, phone, notes } = req.body;
+        const { name, email, phone, notes, group_id } = req.body;
 
         if (!name || name.length < 2) {
             return res.status(400).json({
@@ -77,20 +79,40 @@ router.post('/', async (req,res) => {
             });
         }
 
-        const result = await db.query(
+        // Use Transaction to make sure both success, otherwise both fail
+        await client.query("BEGIN");
+
+        const contactResult = await client.query(
             `
             INSERT INTO contacts (name, email, phone, notes)
             VALUES ($1,$2,$3,$4)
             RETURNING *
             `,
-            [name, email, phone, notes]
+            [name, email, phone||null, notes||null]
         );
 
-        res.status(201).json(result.rows[0]);
+        const newContact = contactResult.rows[0];
+
+        if (Array.isArray(group_id) && group_id.length > 0) {
+            const insertPromises = group_id.map(groupId => 
+                client.query(
+                    `INSERT INTO contact_groups (contact_id, group_id) VALUES ($1, $2);`,
+                    [newContact.id, groupId]
+                )
+            );
+            await Promise.all(insertPromises);
+        }
+
+        await client.query("COMMIT");
+
+        res.status(201).json(newContact);
 
     } catch (error) {
+        await client.query("ROLLBACK");
         console.error(error);
-        res.status(500).json({ error: "Failed to add contact" });
+        res.status(500).json({ error: error.message || "Failed to add contact" });
+    } finally {
+        client.release();
     }
 })
 
