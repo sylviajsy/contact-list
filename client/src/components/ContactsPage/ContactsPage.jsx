@@ -64,12 +64,12 @@ const ContactsPage = () => {
           Add Contact
       </button>
 
-      {setShowModal && (
+      {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
             <button 
               className="close-btn" 
-              onClick={() => setModal(false)}
+              onClick={() => setShowModal(false)}
             >
               &times;
             </button>

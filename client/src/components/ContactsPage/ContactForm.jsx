@@ -18,12 +18,12 @@ const ContactForm = ({ onAdd }) => {
     };
 
     const clearForm = () => {
-        setForm({ name: "", email: "", phone: "", notes: "" });
+        setFormData({ name: "", email: "", phone: "", notes: "" });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(formData);
+        onAdd(formData);
         clearForm();
     };
 
@@ -74,7 +74,7 @@ const ContactForm = ({ onAdd }) => {
                 />
             </label>
 
-            <button type="submit" variant="outline-success">
+            <button type="submit">
                 Add
             </button>
         </form>
