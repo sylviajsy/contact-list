@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { toast } from "react-toastify";
 import ContactsList from './ContactsList';
 import ContactForm from './ContactForm';
+import "./ContactsPage.css" 
 
 const ContactsPage = () => {
     const [contacts, setContacts] = useState([]);

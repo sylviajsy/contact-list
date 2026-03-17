@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import "./ContactForm.css" 
 
 const ContactForm = ({ onAdd }) => {
     const [formData, setFormData] = useState({
@@ -29,10 +30,10 @@ const ContactForm = ({ onAdd }) => {
 
   return (
     <div>
-        <h3> Add New Individual </h3>
+        <h3> Add New Contact </h3>
         <form className="contact-form" onSubmit={handleSubmit}>
             <label>
-                Name
+                Name 
                 <input
                     type="text"
                     name="name"
@@ -44,7 +45,7 @@ const ContactForm = ({ onAdd }) => {
             </label>
 
             <label>
-                Email *
+                Email 
                 <input
                     type="email"
                     name="email"
@@ -55,7 +56,7 @@ const ContactForm = ({ onAdd }) => {
             </label>
 
             <label>
-                Phone
+                Phone 
                 <input
                     type="tel"
                     name="phone"
@@ -65,7 +66,7 @@ const ContactForm = ({ onAdd }) => {
             </label>
 
             <label>
-                Notes
+                Notes 
                 <textarea
                     name="notes"
                     value={formData.notes}

@@ -28,7 +28,6 @@ const ContactsList = ({ contacts }) => {
             </div>
       ))}
 
-      
     </div>
   )
 }
