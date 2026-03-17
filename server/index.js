@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import db from "./db/db.js";
 
 import contactsRoutes from "./routes/contacts.js";
+import groupRoutes from "./routes/group.js";
 
 dotenv.config();
 
@@ -31,7 +32,8 @@ app.get("/api/test-db", async (req, res) => {
 });
 
 // Routes
-app.use('/api/contacts', contactsRoutes)
+app.use('/api/contacts', contactsRoutes);
+app.use('/api/group', groupRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
