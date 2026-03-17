@@ -46,7 +46,7 @@ const ContactsPage = () => {
                 console.log("Contacts:", data);
                 toast.success("New Contact added successfully");
                 await loadContacts();
-                setModal(false);
+                setShowModal(false);
             } else {
                 const errorData = await response.json();
                 throw new Error(errorData.error || "Failed to add contact"); 

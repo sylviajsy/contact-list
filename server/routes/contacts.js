@@ -65,7 +65,17 @@ router.post('/', async (req,res) => {
     try {
         const { name, email, phone, notes } = req.body;
 
-        
+        if (!name || name.length < 2) {
+            return res.status(400).json({
+                error: "Name must be at least 2 characters"
+            });
+        }
+
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            return res.status(400).json({
+                error: "Please enter a valid email address."
+            });
+        }
 
         const result = await db.query(
             `
