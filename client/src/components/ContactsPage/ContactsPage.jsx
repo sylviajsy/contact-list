@@ -4,6 +4,7 @@ import ContactsList from './ContactsList';
 
 const ContactsPage = () => {
     const [contacts, setContacts] = useState([]);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         loadContacts();
@@ -28,10 +29,53 @@ const ContactsPage = () => {
         }
     }
 
+    const onAdd = async(newContacts) => {
+        try {
+            const response = await fetch("/api/contacts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newContacts),
+            });
+
+            if (response.ok){
+                const data = await response.json();
+                console.log("Contacts:", data);
+                toast.success("New Contact added successfully");
+                await loadContacts();
+                setModal(false);
+            } else {
+                const errorData = await response.json();
+                toast.error(errorData.error || "Failed to add individual");  
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Network error. Please try again later.");
+        }
+    }
+
   return (
     <div>
       <h1>Contacts</h1>
       <ContactsList contacts={contacts}/>
+      <button className="add-btn" onClick={() => setShowModal(true)}>
+          Add Contact
+      </button>
+
+      {setShowModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button 
+              className="close-btn" 
+              onClick={() => setModal(false)}
+            >
+              &times;
+            </button>
+            <ContactForm onAdd={onAdd}/>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
