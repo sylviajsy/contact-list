@@ -42,16 +42,16 @@ const ContactForm = ({ onAdd }) => {
         }));
     };
 
-    const handleGroupChange = (ids) => {
+    const handleGroupChange = (groupid) => {
         setFormData((prev) => {
 
-            const exists = prev.groupId.includes(ids);
+            const exists = prev.group_id.includes(groupid);
 
             return {
                 ...prev,
-                groupId: exists
-                    ? prev.groupId.filter((id) => id !== ids)
-                    : [...prev.groupId, ids]
+                group_id: exists
+                    ? prev.group_id.filter((id) => id !== groupid)
+                    : [...prev.group_id, groupid]
                 };
         });
     }
@@ -111,7 +111,7 @@ const ContactForm = ({ onAdd }) => {
 
                         <input
                             type="checkbox"
-                            checked={formData.groupIds.includes(group.id)}
+                            checked={formData.group_id.includes(group.id)}
                             onChange={() => handleGroupChange(group.id)}
                         />
 
