@@ -1,6 +1,11 @@
 import React from 'react'
 import "./ContactsList.css" 
 
+const getInitials = (name) => {
+  const matches = name.match(/\b\w/g);
+  return matches.join("").toUpperCase();
+};
+
 const ContactsList = ({ contacts }) => {
 
     if (!contacts || contacts.length === 0) {
@@ -11,6 +16,10 @@ const ContactsList = ({ contacts }) => {
     <div className="contacts-grid">
         {contacts.map((contact) => (
             <div key={contact.id} className="contact-card">
+
+            <div className="avatar">
+                {getInitials(contact.name)}
+            </div>
 
             <h3>{contact.name}</h3>
 
