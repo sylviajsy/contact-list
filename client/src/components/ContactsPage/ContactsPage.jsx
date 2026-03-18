@@ -14,21 +14,20 @@ const ContactsPage = () => {
 
     const loadContacts = async () => {
         try{
-        const res = await fetch("/api/contacts");
-        
-        if (!res.ok) {
-          const errorData = await res.json();
-          toast.error(errorData || "Failed to fetch Contacts");
-          return;
-        }
+          const res = await fetch("/api/contacts");
+          
+          if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || "Failed to fetch Contacts");
+          }
 
-        const data = await res.json();
-        setContacts(data);
+          const data = await res.json();
+          setContacts(data);
 
-        } catch (error) {
-          console.error(error);
-          toast.error("Network error. Please try again later.");
-        }
+          } catch (error) {
+            console.error(error);
+            toast.error("Network error. Please try again later.");
+          }
     }
 
     const onAdd = async(newContacts) => {
