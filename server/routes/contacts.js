@@ -43,7 +43,8 @@ router.get("/:id", async (req, res) => {
                 contacts.email,
                 contacts.phone,
                 contacts.notes,
-                COALESCE(STRING_AGG(groups.name, ', '), 'No Group') AS groups
+                COALESCE(STRING_AGG(groups.name, ', '), 'No Group') AS groups,
+                ARRAY_REMOVE(ARRAY_AGG(groups.id), NULL) AS group_id
             FROM contacts
             LEFT JOIN contact_groups
                 ON contacts.id = contact_groups.contact_id

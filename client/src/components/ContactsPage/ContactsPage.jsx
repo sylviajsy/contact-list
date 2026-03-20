@@ -75,13 +75,14 @@ const ContactsPage = () => {
         setSelectedContact(data);
         setShowDetailModal(true);
         console.log("Contact Detail Data", data);
+        await loadContacts();
       } catch (error) {
         console.error(error);
         toast.error(error.message);
       }
     }
 
-    const onEdit = async (contactId) => {
+    const handleEdit = async (contactId) => {
       try {
         const res = await fetch(`/api/contacts/${contactId}`);
         
@@ -101,10 +102,34 @@ const ContactsPage = () => {
       }
     }
 
+    const onEdit = async (updatedContact) => {
+      try {
+         const response = await fetch(`/api/contacts/${updatedContact.id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedContact),
+          });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to update contact");
+        }
+
+        await loadContacts();
+        setShowModal(false);
+        setEditingContact(null);
+      } catch (error) {
+        console.error(error);
+        toast.error(error.message);
+      }
+    } 
+
   return (
     <div>
       <h1>Contacts</h1>
-      <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail} onEdit={onEdit}/>
+      <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail} handleEdit={handleEdit}/>
       {showDetailModal && selectedContact && (
         <div className="modal-overlay">
           <div className="modal-content">

@@ -6,7 +6,7 @@ const getInitials = (name) => {
   return matches.join("").toUpperCase();
 };
 
-const ContactsList = ({ contacts, handleOpenDetail, onEdit }) => {
+const ContactsList = ({ contacts, handleOpenDetail, handleEdit }) => {
 
     if (!contacts || contacts.length === 0) {
         return <p>No contacts found</p>;
@@ -26,7 +26,7 @@ const ContactsList = ({ contacts, handleOpenDetail, onEdit }) => {
               <p>{contact.email}</p>
 
               <div className="card-actions">
-                <button onClick={() => onEdit(contact.id)}>Edit</button>
+                <button onClick={() => handleEdit(contact.id)}>Edit</button>
               </div>
 
             </div>
