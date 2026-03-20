@@ -70,6 +70,7 @@ const ContactsPage = () => {
         const data = await res.json();
         setSelectedContact(data);
         setShowDetailModal(true);
+        console.log("Contact Detail Data", data);
       } catch (error) {
         console.error(error);
         toast.error(error.message);
@@ -79,7 +80,7 @@ const ContactsPage = () => {
   return (
     <div>
       <h1>Contacts</h1>
-      <ContactsList contacts={contacts}/>
+      <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail}/>
       <button className="add-btn" onClick={() => setShowModal(true)}>
           Add Contact
       </button>

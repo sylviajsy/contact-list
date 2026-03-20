@@ -6,7 +6,7 @@ const getInitials = (name) => {
   return matches.join("").toUpperCase();
 };
 
-const ContactsList = ({ contacts }) => {
+const ContactsList = ({ contacts,handleOpenDetail }) => {
 
     if (!contacts || contacts.length === 0) {
         return <p>No contacts found</p>;
@@ -15,7 +15,7 @@ const ContactsList = ({ contacts }) => {
   return (
     <div className="contacts-grid">
         {contacts.map((contact) => (
-            <div key={contact.id} className="contact-card">
+            <div key={contact.id} className="contact-card" onClick={()=>handleOpenDetail(contact.id)}>
 
             <div className="avatar">
                 {getInitials(contact.name)}
