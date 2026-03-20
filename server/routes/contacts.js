@@ -116,4 +116,81 @@ router.post('/', async (req,res) => {
     }
 })
 
+// Update a Contact
+router.put('/:id', async(req, res) => {
+    const client = await db.connect();
+
+    try {
+        const { id } = req.params;
+        const { name, email, phone, notes, group_id } = req.body;
+
+        if (!name || name.length < 2) {
+            return res.status(400).json({
+                error: "Name must be at least 2 characters"
+            });
+        }
+
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            return res.status(400).json({
+                error: "Please enter a valid email address."
+            });
+        }
+
+        // Use Transaction to make sure both success, otherwise both fail
+        await client.query("BEGIN");
+
+        const contactResult = await client.query(
+            `
+            UPDATE contacts
+            SET name = $1,
+                email = $2,
+                phone = $3,
+                notes = $4
+            WHERE id = $5
+            RETURNING *;
+            `,
+            [name, email, phone||null, notes||null, id]
+        );
+
+        if (result.rows.length === 0) {
+            await client.query("ROLLBACK");
+            return res.status(404).json({
+                error: "Contact not found",
+            });
+        }
+
+        const updatedContact = contactResult.rows[0];
+
+        // Delete Old relationship
+        await client.query(
+        `
+            DELETE FROM contact_groups
+            WHERE contact_id = $1;
+        `,
+            [id]
+        );
+
+        if (Array.isArray(group_id) && group_id.length > 0) {
+            const insertPromises = group_id.map(groupId => 
+                client.query(
+                    `INSERT INTO contact_groups (contact_id, group_id) VALUES ($1, $2);`,
+                    [updatedContact.id, groupId]
+                )
+            );
+            await Promise.all(insertPromises);
+        }
+
+        await client.query("COMMIT");
+
+        res.status(201).json(updatedContact);
+
+    } catch (error) {
+        await client.query("ROLLBACK");
+        console.error(error);
+        res.status(500).json({ error: error.message || "Failed to add contact" });
+    } finally {
+        client.release();
+    }
+})
+
 export default router;
