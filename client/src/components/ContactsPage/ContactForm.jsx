@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { toast } from "react-toastify";
 import "./ContactForm.css";
 
-const ContactForm = ({ onAdd }) => {
+const ContactForm = ({ onSubmit, contactData }) => {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -16,6 +16,18 @@ const ContactForm = ({ onAdd }) => {
     useEffect(() => {
         loadGroups();
     }, []);
+
+    useEffect(() => {
+        if (contactData){
+            setFormData({
+                name: contactData.name || "",
+                email: contactData.email || "",
+                phone: contactData.phone || "",
+                notes: contactData.notes || "",
+                group_id: contactData.group_id || [],
+            });
+        }
+    },[contactData])
 
     const loadGroups = async () => {
         try {
@@ -62,7 +74,7 @@ const ContactForm = ({ onAdd }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onAdd(formData);
+        onSubmit(formData);
         clearForm();
     };
 

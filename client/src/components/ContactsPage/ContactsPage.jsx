@@ -49,6 +49,7 @@ const ContactsPage = () => {
                 console.log("Contacts:", data);
                 toast.success("New Contact added successfully");
                 await loadContacts();
+                setEditingContact(null);
                 setShowModal(false);
             } else {
                 const errorData = await response.json();
@@ -90,6 +91,7 @@ const ContactsPage = () => {
         }
 
         const data = await res.json();
+        console.log("Edit Contact Data", data);
 
         setEditingContact(data);
         setShowModal(true);
@@ -129,7 +131,9 @@ const ContactsPage = () => {
             >
               &times;
             </button>
-            <ContactForm onAdd={onAdd}/>
+            <ContactForm 
+              contactData = {editingContact}
+              onSubmit={editingContact ? onEdit : onAdd}/>
           </div>
         </div>
       )}
