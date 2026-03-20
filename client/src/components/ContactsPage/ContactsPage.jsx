@@ -7,6 +7,8 @@ import "./ContactsPage.css"
 const ContactsPage = () => {
     const [contacts, setContacts] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [selectedContact, setSelectedContact] = useState(null);
+    const [showDetailModal, setShowDetailModal] = useState(false);
 
     useEffect(() => {
         loadContacts();
@@ -54,6 +56,24 @@ const ContactsPage = () => {
             console.error(error);
             toast.error(error.message);
         }
+    }
+
+    const handleOpenDetail = async (contactId) => {
+      try {
+        const res = await fetch(`/api/contacts/${contactId}`);
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Failed to fetch contact details");
+        }
+
+        const data = await res.json();
+        setSelectedContact(data);
+        setShowDetailModal(true);
+      } catch (error) {
+        console.error(error);
+        toast.error(error.message);
+      }
     }
 
   return (
