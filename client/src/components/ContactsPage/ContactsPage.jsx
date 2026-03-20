@@ -104,7 +104,7 @@ const ContactsPage = () => {
 
     const onEdit = async (updatedContact) => {
       try {
-         const response = await fetch(`/api/contacts/${updatedContact.id}`, {
+         const response = await fetch(`/api/contacts/${editingContact.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

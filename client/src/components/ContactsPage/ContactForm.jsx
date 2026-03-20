@@ -20,6 +20,7 @@ const ContactForm = ({ onSubmit, contactData }) => {
     useEffect(() => {
         if (contactData){
             setFormData({
+                id: contactData.id,
                 name: contactData.name || "",
                 email: contactData.email || "",
                 phone: contactData.phone || "",

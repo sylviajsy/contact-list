@@ -153,7 +153,7 @@ router.put('/:id', async(req, res) => {
             [name, email, phone||null, notes||null, id]
         );
 
-        if (result.rows.length === 0) {
+        if (contactResult.rows.length === 0) {
             await client.query("ROLLBACK");
             return res.status(404).json({
                 error: "Contact not found",
