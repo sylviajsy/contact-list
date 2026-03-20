@@ -1,5 +1,4 @@
-import React from 'react'
-
+import "./ContactsDetail.css" 
 
 const getInitials = (name) => {
   const matches = name.match(/\b\w/g);

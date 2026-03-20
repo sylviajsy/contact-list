@@ -1,0 +1,64 @@
+.detail-modal {
+  width: 460px;
+  max-width: 90%;
+  padding: 28px 24px;
+}
+
+.detail-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.detail-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+.detail-header h2 {
+  margin: 0;
+  color: #1f2937;
+}
+
+.detail-email {
+  margin-top: 6px;
+  color: #6b7280;
+}
+
+.detail-body {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.detail-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.detail-notes p {
+  margin: 0;
+  color: #111827;
+}
