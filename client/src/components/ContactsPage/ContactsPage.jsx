@@ -8,6 +8,7 @@ import "./ContactsPage.css"
 const ContactsPage = () => {
     const [contacts, setContacts] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [editingContact, setEditingContact] = useState(null);
     const [selectedContact, setSelectedContact] = useState(null);
     const [showDetailModal, setShowDetailModal] = useState(false);
 
@@ -53,6 +54,7 @@ const ContactsPage = () => {
                 const errorData = await response.json();
                 throw new Error(errorData.error || "Failed to add contact"); 
             }
+            
         } catch (error) {
             console.error(error);
             toast.error(error.message);
@@ -78,10 +80,29 @@ const ContactsPage = () => {
       }
     }
 
+    const onEdit = async (contactId) => {
+      try {
+        const res = await fetch(`/api/contacts/${contactId}`);
+        
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Failed to fetch contact");
+        }
+
+        const data = await res.json();
+
+        setEditingContact(data);
+        setShowModal(true);
+      } catch (error) {
+        console.error(error);
+        toast.error(error.message);
+      }
+    }
+
   return (
     <div>
       <h1>Contacts</h1>
-      <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail}/>
+      <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail} onEdit={onEdit}/>
       {showDetailModal && selectedContact && (
         <div className="modal-overlay">
           <div className="modal-content">

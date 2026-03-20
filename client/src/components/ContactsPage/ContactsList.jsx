@@ -6,7 +6,7 @@ const getInitials = (name) => {
   return matches.join("").toUpperCase();
 };
 
-const ContactsList = ({ contacts,handleOpenDetail }) => {
+const ContactsList = ({ contacts, handleOpenDetail, onEdit }) => {
 
     if (!contacts || contacts.length === 0) {
         return <p>No contacts found</p>;
@@ -17,13 +17,17 @@ const ContactsList = ({ contacts,handleOpenDetail }) => {
         {contacts.map((contact) => (
             <div key={contact.id} className="contact-card" onClick={()=>handleOpenDetail(contact.id)}>
 
-            <div className="avatar">
-                {getInitials(contact.name)}
-            </div>
+              <div className="avatar">
+                  {getInitials(contact.name)}
+              </div>
 
-            <h3>{contact.name}</h3>
+              <h3>{contact.name}</h3>
 
-            <p>{contact.email}</p>
+              <p>{contact.email}</p>
+
+              <div className="card-actions">
+                <button onClick={() => onEdit(contact.id)}>Edit</button>
+              </div>
 
             </div>
       ))}
