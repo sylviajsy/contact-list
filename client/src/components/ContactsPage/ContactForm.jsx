@@ -81,7 +81,7 @@ const ContactForm = ({ onSubmit, contactData }) => {
 
   return (
     <div>
-        <h3> Add New Contact </h3>
+        <h3> {contactData ? "Edit Contact" : "Add New Contact"} </h3>
         <form className="contact-form" onSubmit={handleSubmit}>
             <label>
                 Name 
@@ -145,7 +145,7 @@ const ContactForm = ({ onSubmit, contactData }) => {
             </label>
 
             <button type="submit">
-                Add
+                {contactData ? "Save" : "Add"}
             </button>
         </form>
     </div>
