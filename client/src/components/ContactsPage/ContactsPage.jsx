@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { toast } from "react-toastify";
 import ContactsList from './ContactsList';
 import ContactForm from './ContactForm';
+import ContactsDetail from './ContactsDetail';
 import "./ContactsPage.css" 
 
 const ContactsPage = () => {
@@ -81,6 +82,19 @@ const ContactsPage = () => {
     <div>
       <h1>Contacts</h1>
       <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail}/>
+      {showDetailModal && selectedContact && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button 
+              className="close-btn" 
+              onClick={() => setShowDetailModal(false)}
+            >
+              &times;
+            </button>
+            <ContactsDetail selectedContact={selectedContact}/>
+          </div>
+        </div>
+      )}
       <button className="add-btn" onClick={() => setShowModal(true)}>
           Add Contact
       </button>
