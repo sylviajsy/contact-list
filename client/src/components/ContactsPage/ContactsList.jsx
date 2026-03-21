@@ -26,7 +26,12 @@ const ContactsList = ({ contacts, handleOpenDetail, handleEdit }) => {
               <p>{contact.email}</p>
 
               <div className="card-actions">
-                <button onClick={() => handleEdit(contact.id)}>Edit</button>
+                <button onClick={(e) => {
+                  e.stopPropagation()
+                  handleEdit(contact.id)
+                  }}>
+                    Edit
+                </button>
               </div>
 
             </div>

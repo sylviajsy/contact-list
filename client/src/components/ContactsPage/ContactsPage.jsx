@@ -84,6 +84,7 @@ const ContactsPage = () => {
 
     const handleEdit = async (contactId) => {
       try {
+        setShowDetailModal(false);
         const res = await fetch(`/api/contacts/${contactId}`);
         
         if (!res.ok) {
