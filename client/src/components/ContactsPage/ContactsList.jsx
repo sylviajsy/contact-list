@@ -6,7 +6,7 @@ const getInitials = (name) => {
   return matches.join("").toUpperCase();
 };
 
-const ContactsList = ({ contacts, handleOpenDetail, handleEdit }) => {
+const ContactsList = ({ contacts, handleOpenDetail, handleEdit, handleDelete }) => {
 
     if (!contacts || contacts.length === 0) {
         return <p>No contacts found</p>;
@@ -31,6 +31,13 @@ const ContactsList = ({ contacts, handleOpenDetail, handleEdit }) => {
                   handleEdit(contact.id)
                   }}>
                     Edit
+                </button>
+
+                <button onClick={(e) => {
+                  e.stopPropagation()
+                  handleDelete(contact.id)
+                  }}>
+                    Delete
                 </button>
               </div>
 

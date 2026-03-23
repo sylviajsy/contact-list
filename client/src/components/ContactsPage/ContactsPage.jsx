@@ -127,7 +127,9 @@ const ContactsPage = () => {
       }
     } 
 
-    const onDelete = async (contactId) => {
+    const handleDelete = async (contactId) => {
+      if (!window.confirm("Are you sure you want to delete?")) return;
+      
       try {
         const response = await fetch(`/api/contacts/${contactId}`, {
           method: "DELETE",
@@ -149,7 +151,7 @@ const ContactsPage = () => {
   return (
     <div>
       <h1>Contacts</h1>
-      <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail} handleEdit={handleEdit}/>
+      <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail} handleEdit={handleEdit} handleDelete={handleDelete}/>
       {showDetailModal && selectedContact && (
         <div className="modal-overlay">
           <div className="modal-content">
