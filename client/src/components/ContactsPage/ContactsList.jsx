@@ -29,15 +29,17 @@ const ContactsList = ({ contacts, handleOpenDetail, handleEdit, handleDelete }) 
                 <button onClick={(e) => {
                   e.stopPropagation()
                   handleEdit(contact.id)
-                  }}>
-                    Edit
+                  }}
+                  className="edit-btn">
+                    ✏️
                 </button>
 
                 <button onClick={(e) => {
                   e.stopPropagation()
                   handleDelete(contact.id)
-                  }}>
-                    Delete
+                  }}
+                  className="delete-btn">
+                    🗑️
                 </button>
               </div>
 
