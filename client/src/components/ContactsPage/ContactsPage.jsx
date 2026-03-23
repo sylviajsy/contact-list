@@ -127,6 +127,25 @@ const ContactsPage = () => {
       }
     } 
 
+    const onDelete = async (contactId) => {
+      try {
+        const response = await fetch(`/api/contacts/${contactId}`, {
+          method: "DELETE",
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to delete");
+        }
+
+        toast.success("Deleted successfully");
+        await loadContacts();
+      } catch (error) {
+        console.error(error);
+        toast.error(error.message);
+      }
+    }
+
   return (
     <div>
       <h1>Contacts</h1>
