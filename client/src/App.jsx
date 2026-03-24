@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import { ToastContainer } from "react-toastify";
 import ContactsPage from "./components/ContactsPage/ContactsPage";
-// import GroupPage from "./components/GroupsPage";
+import GroupPage from "./components/GroupsPage/GroupPage";
 
 function App() {
   const [page, setPage] = useState("contacts");
@@ -30,7 +30,7 @@ function App() {
       
       {page === "contacts" && <ContactsPage />}
 
-      {/* {page === "groups" && <GroupsPage />} */}
+      {page === "groups" && <GroupPage />}
 
     </>
   )
