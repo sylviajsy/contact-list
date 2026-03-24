@@ -155,6 +155,7 @@ const ContactsPage = () => {
 
     const handleSearch = async () => {
       await loadContacts(searchTerm);
+      setSearchTerm("");
     };
 
   return (
