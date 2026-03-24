@@ -11,14 +11,21 @@ const ContactsPage = () => {
     const [editingContact, setEditingContact] = useState(null);
     const [selectedContact, setSelectedContact] = useState(null);
     const [showDetailModal, setShowDetailModal] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         loadContacts();
     }, []);
 
-    const loadContacts = async () => {
+    const loadContacts = async (search="") => {
         try{
-          const res = await fetch("/api/contacts");
+          let url = "/api/contacts";
+
+          if (search!== "") {
+            url += `?search=${encodeURIComponent(search)}`;
+          }
+
+          const res = await fetch(url);
           
           if (!res.ok) {
             const errorData = await res.json();
@@ -27,11 +34,10 @@ const ContactsPage = () => {
 
           const data = await res.json();
           setContacts(data);
-
-          } catch (error) {
+        } catch (error) {
             console.error(error);
             toast.error("Network error. Please try again later.");
-          }
+        }
     }
 
     const onAdd = async(newContacts) => {
@@ -75,7 +81,6 @@ const ContactsPage = () => {
         setSelectedContact(data);
         setShowDetailModal(true);
         console.log("Contact Detail Data", data);
-        await loadContacts();
       } catch (error) {
         console.error(error);
         toast.error(error.message);
@@ -129,7 +134,7 @@ const ContactsPage = () => {
 
     const handleDelete = async (contactId) => {
       if (!window.confirm("Are you sure you want to delete?")) return;
-      
+
       try {
         const response = await fetch(`/api/contacts/${contactId}`, {
           method: "DELETE",
@@ -148,8 +153,24 @@ const ContactsPage = () => {
       }
     }
 
+    const handleSearch = async () => {
+      await loadContacts(searchTerm);
+    };
+
   return (
     <div>
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search contacts..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button onClick={handleSearch}>
+          Search
+        </button>
+      </div>
+
       <h1>Contacts</h1>
       <ContactsList contacts={contacts} handleOpenDetail={handleOpenDetail} handleEdit={handleEdit} handleDelete={handleDelete}/>
       {showDetailModal && selectedContact && (
