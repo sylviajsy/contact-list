@@ -6,6 +6,22 @@ const router = express.Router();
 // Get all contacts
 router.get('/', async (req,res) => {
     try{
+        const { search } = req.query;
+        const params = [];
+        const where = [];
+
+        if (search){
+            params.push(`%${search}%`);
+
+            where.push(`
+                contacts.name ILIKE $${params.length}
+                OR contacts.email ILIKE $${params.length}
+                OR contacts.phone ILIKE $${params.length}
+                OR contacts.notes ILIKE $${params.length}
+                OR groups.name ILIKE $${params.length}
+            `);
+        }
+
         const result = await db.query(`
             SELECT
                 contacts.id,
@@ -19,9 +35,10 @@ router.get('/', async (req,res) => {
                 ON contacts.id = contact_groups.contact_id
             LEFT JOIN groups
                 ON groups.id = contact_groups.group_id
+            ${where.length ? `WHERE ${where.join(" AND ")}` : ""}
             GROUP BY contacts.id
             ORDER BY contacts.id
-        `);
+        `, params);
 
         res.json(result.rows);
     } catch (error) {
