@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+import ContactsList from '../ContactsPage/ContactsList';
 
 const GroupPage = () => {
     const [groups, setGroups] = useState([]);
@@ -28,8 +29,13 @@ const GroupPage = () => {
     <div>
         <h1>Groups</h1>
         {groups.map((group) => (
-            <div key={group.id}>
-                <h2>{group.name}</h2>
+            <div key={group.id} className="group-section">
+                <h2 className="group-title">{group.name}</h2>
+                {group.contacts.length == 0 ?(
+                    <p>No contacts</p>
+                ):(
+                    <ContactsList contacts={group.contacts} />
+                )}
             </div>
         ))}
     </div>
