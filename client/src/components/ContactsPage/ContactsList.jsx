@@ -27,7 +27,7 @@ const ContactsList = ({ contacts, handleOpenDetail, handleEdit, handleDelete }) 
 
               <div className="card-actions">
                 <button onClick={(e) => {
-                  e.stopPropagation()
+                  e.stopPropagation();
                   handleEdit(contact.id)
                   }}
                   className="edit-btn">
@@ -35,7 +35,7 @@ const ContactsList = ({ contacts, handleOpenDetail, handleEdit, handleDelete }) 
                 </button>
 
                 <button onClick={(e) => {
-                  e.stopPropagation()
+                  e.stopPropagation();
                   handleDelete(contact.id)
                   }}
                   className="delete-btn">
