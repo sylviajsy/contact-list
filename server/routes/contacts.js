@@ -241,9 +241,22 @@ router.put('/:id', async(req, res) => {
 // Delete a contact
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
+    const client = await db.connect();
 
     try {
-        const result = await db.query(
+        // Use Transaction to make sure both success, otherwise both fail
+        await client.query("BEGIN");
+
+        // Delete contact_groups
+        await client.query(
+            `
+            DELETE FROM contact_groups
+            WHERE contact_id = $1;
+            `,
+            [id]
+        );
+
+        const result = await client.query(
             `DELETE FROM contacts WHERE id = $1 RETURNING *`,
             [id]
         );
@@ -252,10 +265,17 @@ router.delete('/:id', async (req, res) => {
             return res.status(404).json({ error: "Contact not found" });
         }
 
-        res.json({ message: "Deleted successfully" });
+        await client.query("COMMIT");
+
+        res.json({ message: "Deleted successfully",
+            deletedContact: result.rows[0],
+         });
     } catch (error) {
+        await client.query("ROLLBACK");
         console.error(error);
         res.status(500).json({ error: error.message || "Failed to delete contact" });
+    } finally {
+        client.release();
     }
 })
 
