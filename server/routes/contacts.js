@@ -179,23 +179,50 @@ router.put('/:id', async(req, res) => {
 
         const updatedContact = contactResult.rows[0];
 
-        // Delete Old relationship
-        await client.query(
-        `
-            DELETE FROM contact_groups
+        // current group ids in DB
+        const currentGroupsResult = await client.query(
+            `
+            SELECT group_id
+            FROM contact_groups
             WHERE contact_id = $1;
-        `,
+            `,
             [id]
         );
 
-        if (Array.isArray(group_id) && group_id.length > 0) {
-            const insertPromises = group_id.map(groupId => 
-                client.query(
-                    `INSERT INTO contact_groups (contact_id, group_id) VALUES ($1, $2);`,
-                    [updatedContact.id, groupId]
-                )
+        const currentGroupIds = currentGroupsResult.rows.map((row) => row.group_id);
+        const nextGroupIds = Array.isArray(group_id) ? group_id : [];
+
+        // find removed groups
+        const removedGroupIds = currentGroupIds.filter(
+            (groupId) => !nextGroupIds.includes(groupId)
+        );
+
+        // find newly added groups
+        const addedGroupIds = nextGroupIds.filter(
+            (groupId) => !currentGroupIds.includes(groupId)
+        );
+
+        // Delete only removed relationships
+        if (removedGroupIds.length > 0) {
+            await client.query(
+                `
+                DELETE FROM contact_groups
+                WHERE contact_id = $1
+                AND group_id = ANY($2::int[]);
+                `,
+                [id, removedGroupIds]
             );
-            await Promise.all(insertPromises);
+        }
+
+        // insert only new relationships
+        for (const groupId of addedGroupIds) {
+            await client.query(
+                `
+                INSERT INTO contact_groups (contact_id, group_id)
+                VALUES ($1, $2);
+                `,
+                [id, groupId]
+            );
         }
 
         await client.query("COMMIT");
