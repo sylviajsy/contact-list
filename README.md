@@ -24,6 +24,7 @@ Built with a modern PERN stack (PostgreSQL, Express, React, Node.js), this proje
   - Notes
   - Group name
 - Case-insensitive fuzzy search using SQL (ILIKE)
+
 ![ScreenRecording2026-03-27at1 48 29AM-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/9aaa68d9-74d9-469b-a92f-112a8e6b7449)
 
 ## CRUD Operations
