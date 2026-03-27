@@ -2,6 +2,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from "@testing-library/react";
 import ContactsList from "./ContactsList";
 import { describe } from 'vitest';
+import userEvent from '@testing-library/user-event';
 
 const mockContacts = [
   {
@@ -25,4 +26,19 @@ describe('ContactList Unit Test', () => {
         expect(screen.getByText("Alice Johnson")).toBeInTheDocument();
         expect(screen.getByText("Bob Smith")).toBeInTheDocument();
     })
+
+    test("calls handleEdit when Edit button is clicked", async () => {
+        const user = userEvent.setup();
+        const mockEdit = vi.fn();
+
+        render(
+            <ContactsList contacts={mockContacts} handleEdit={mockEdit} />
+        );
+
+        const editButtons = screen.getAllByTestId("edit-contact-btn");
+
+        await user.click(editButtons[0]);
+
+        expect(mockEdit).toHaveBeenCalledWith(mockContacts[0].id);
+    });
 })
