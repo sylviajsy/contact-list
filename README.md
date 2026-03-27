@@ -1,3 +1,55 @@
+### Contact Management App
+A full-stack contact management application that allows users to create, update, delete, search, and organize contacts into groups.
+
+Built with a modern PERN stack (PostgreSQL, Express, React, Node.js), this project demonstrates full CRUD functionality, many-to-many relationships, reusable UI components, and both frontend and backend testing.
+
+### 🚀 Features
+**📌 Contacts**
+- View all contacts in a card-based UI
+- View detailed contact information in a modal
+- Add new contacts
+- Edit existing contacts
+- Delete contacts with confirmation
+
+**🏷️ Groups**
+- Assign contacts to one or multiple groups
+- View contacts grouped by category on the Groups page
+- Many-to-many relationship via junction table
+
+**🔍 Search**
+- Search contacts by:
+  - Name
+  - Email
+  - Phone
+  - Notes
+  - Group name
+- Case-insensitive fuzzy search using SQL (ILIKE)
+![ScreenRecording2026-03-27at1 48 29AM-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/9aaa68d9-74d9-469b-a92f-112a8e6b7449)
+
+## CRUD Operations
+**Contacts**
+- `GET /api/contacts` → Get all contacts
+- `GET /api/contacts/:id` → Get one contact
+- `POST /api/contacts` → Create contact
+- `PUT /api/contacts/:id` → Update contact
+- `DELETE /api/contacts/:id` → Delete contact
+**Groups**
+- `GET /api/groups` → Get all groups with contacts
+
+### 🛠️ Tech Stack
+- Frontend
+  - React (Vite)
+  - CSS (custom styling)
+  - React Toastify
+- Backend
+  - Node.js
+  - Express.js
+  - PostgreSQL
+- Testing
+  - Vitest
+  - React Testing Library
+  - API tests using fetch
+
 ### How to test
 1. Clone the repository: `git clone https://github.com/sylviajsy/contact-list.git`
 2. Set Up the Backend
