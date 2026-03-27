@@ -34,3 +34,35 @@ describe('GET /api/contacts endpoint', () => {
         }
     });
 })
+
+// POST create a new contact
+describe('POST /api/contacts endpoint', () => {
+    let response, data;
+
+    beforeAll(async () => {
+        response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newContact)
+        });
+        data = await response.json();
+    });
+
+    test(('returns a response code of 201', () => {
+            expect(response.status).toBe(201);
+        })
+    )
+
+    test('returns an object', () => {
+        expect(data).toBeTypeOf("object");
+    });
+
+    test('created contact has an id', () => {
+        expect(data).toHaveProperty("id");
+    });
+
+    test('created contact has the correct name', () => {
+        expect(data.name).toBe("Vitest User");
+    });
+
+})
