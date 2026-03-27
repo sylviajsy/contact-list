@@ -91,4 +91,65 @@ describe('Contacts Page Integration Test', () => {
             expect(screen.getByDisplayValue("alice@example.com")).toBeInTheDocument();
         })
     })
+
+    test('adds a new contact through the modal form', async () => {
+        const user = userEvent.setup();
+
+        vi.spyOn(global, "fetch")
+        // first call: loadContacts
+        .mockResolvedValueOnce({
+            ok: true,
+            json: async () => mockContacts,
+        })
+        // second call: ContactForm loadGroups
+        .mockResolvedValueOnce({
+            ok: true,
+            json: async () => [{ id: 1, name: "Family" }],
+        })
+        // third call: POST /api/contacts
+        .mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({
+                id: 3,
+                name: "Carol Lee",
+                email: "carol@example.com",
+                phone: "",
+                notes: "",
+                groups: "Family",
+            })
+        })
+        // fourth call: refresh list after add
+        .mockResolvedValueOnce({
+            ok: true,
+            json: async () =>[
+                ...mockContacts,
+                {
+                    id: 3,
+                    name: "Carol Lee",
+                    email: "carol@example.com",
+                    phone: "",
+                    notes: "",
+                    groups: "Family",
+                },
+            ]
+        })
+
+        render(<ContactsPage />);
+
+        expect(await screen.findByText("Alice Johnson")).toBeInTheDocument();
+
+        const addButton = screen.getByRole("button", { name: /add contact/i });
+        await user.click(addButton);
+
+        expect(await screen.findByText(/Add New Contact/i)).toBeInTheDocument();
+
+        await user.type(screen.getByLabelText(/name/i), "Carol Lee");
+        await user.type(screen.getByLabelText(/email/i), "carol@example.com");
+
+        await user.click(screen.getByRole("button", { name: /^add$/i }));
+
+        await waitFor(() => {
+            expect(screen.getByText("Carol Lee")).toBeInTheDocument();
+        });
+    })
 })
