@@ -26,4 +26,11 @@ describe('GET /api/contacts endpoint', () => {
     test('returns an array', () => {
         expect(Array.isArray(data)).toBe(true);
     })
+
+    test("each contact includes name and email", () => {
+        if (data.length > 0) {
+            expect(data[0]).toHaveProperty("name");
+            expect(data[0]).toHaveProperty("email");
+        }
+    });
 })
