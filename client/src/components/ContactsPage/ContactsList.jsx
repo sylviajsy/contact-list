@@ -30,7 +30,8 @@ const ContactsList = ({ contacts, handleOpenDetail, handleEdit, handleDelete }) 
                   e.stopPropagation();
                   handleEdit(contact.id)
                   }}
-                  className="edit-btn">
+                  className="edit-btn"
+                  data-testid="edit-contact-btn">
                     ✏️
                 </button>
 
